@@ -1,0 +1,7 @@
+* Kirby-CMS Development Environment
+
+This is my *personal* setup to create new websites and for developing plugins (later, not now ready).
+
+Here you can find the original [[https://getkirby.com][Kirby-CMS]]
+
+NO WARANTY, NO SUPPORT, NO NOTHING YET!
