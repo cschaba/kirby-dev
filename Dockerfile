@@ -8,14 +8,18 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
     apache2 \
     php \
+    php-apcu \
     php-cli \
+    php-common \
+    php-curl \
     php-fpm \
+    php-gd \
+    php-imagick \
+    php-json \
+    php-memcached \
     php-mbstring \
     php-xml \
-    php-curl \
-    php-json \
-    php-mysqli \
-    php-gd \
+    php-zip \
     libapache2-mod-php \
     curl \
     unzip \
@@ -24,6 +28,13 @@ RUN apt-get update && apt-get install -y \
 
 # Enable Apache2 mod_rewrite
 RUN a2enmod rewrite
+
+# Allow .htaccess
+RUN sed -i -E 's+(.*DocumentRoot.*)+\tDocumentRoot /var/www/html\n\n\t<Directory "/var/www/html">\n\t\tAllowOverride All\n\t</Directory>\n+;' /etc/apache2/sites-enabled/000-default.conf
+
+# Log output to stdout/stderr to have it in the docker logfile management
+RUN sed -i -E 's+CustomLog .*$+CustomLog /dev/stdout combined+;' /etc/apache2/sites-enabled/000-default.conf
+RUN sed -i -E 's+ErrorLog .*$+ErrorLog /dev/stderr+;' /etc/apache2/sites-enabled/000-default.conf
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -34,6 +45,7 @@ RUN composer --version
 # install kirby via composer
 # https://getkirby.com/docs/guide/install-guide/composer
 RUN cd /var/www/ && rm html/* && composer create-project getkirby/starterkit html
+RUN mkdir -p /var/www/html/media && touch /var/www/html/media/index.html
 RUN chown -R www-data:www-data /var/www/html
 
 # Set the working directory for HTML files (this will be linked to the host volume)
