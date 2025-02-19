@@ -1,0 +1,8 @@
+.git/
+# copy only what is needed into docker image
+kirby/.git/
+kirby/.tx/
+kirby/.vscode/
+kirby/bench/
+kirby/tests/
+kirby/.php-cs-fixer.dist.php

@@ -4,9 +4,17 @@ services:
   web:
     build:
       context: .
+    image: kirby-dev
     ports:
       - "80:80"
     volumes:
-      - ./src:/var/www/html
-    container_name: apache-php-container
+      - content:/var/www/html/content
+      - media:/var/www/html/media
+      - site:/var/www/html/site
+    container_name: kirby-dev
     restart: always
+
+volumes:
+  content:
+  media:
+  site:
