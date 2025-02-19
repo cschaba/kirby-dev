@@ -4,4 +4,4 @@ This is my *personal* setup to create new websites and for developing plugins (l
 
 Here you can find the original [[https://getkirby.com][Kirby-CMS]]
 
-NO WARANTY, NO SUPPORT, NO NOTHING YET!
+NO WARRANTY, NO SUPPORT, NO NOTHING YET!
