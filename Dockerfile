@@ -46,10 +46,13 @@ RUN composer --version
 # https://getkirby.com/docs/guide/install-guide/composer
 RUN cd /var/www/ && rm html/* && composer create-project getkirby/starterkit html
 RUN mkdir -p /var/www/html/media && touch /var/www/html/media/index.html
-RUN chown -R www-data:www-data /var/www/html
+
+# install some kirby plugins
+RUN composer require getkirby/cli
 
 # Set the working directory for HTML files (this will be linked to the host volume)
 WORKDIR /var/www/html
+RUN chown -R www-data:www-data /var/www/html
 
 # define volumes which will contain users data
 VOLUME /var/www/html/content
