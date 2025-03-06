@@ -66,6 +66,21 @@ RUN mkdir -p /var/www/html/media && touch /var/www/html/media/index.html
 # install some kirby plugins
 RUN composer require getkirby/cli
 
+# install and configure the versions plugin
+RUN composer require lukasbestle/kirby-versions
+RUN <<initversions bash
+tagName="initial"
+cd /var/www/html/content
+git init
+git add -A
+git config user.email "kirby@localhost"
+git config user.name "Kirby"
+git commit -m "Initial version"
+git tag "\$tagName" -am "Initial version"
+git checkout "\$tagName"
+git branch -d master
+initversions
+
 # fix permissions
 RUN chown -R www-data:www-data /var/www/html
 
