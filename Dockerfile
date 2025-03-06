@@ -47,6 +47,22 @@ RUN composer --version
 RUN cd /var/www/ && rm html/* && composer create-project getkirby/starterkit html
 RUN mkdir -p /var/www/html/media && touch /var/www/html/media/index.html
 
+# enable support for HTTPS behind a proxy
+COPY <<-newindexphp /var/www/html/index.php
+<?php
+
+if (isset(\$_SERVER['HTTP_X_FORWARDED_FOR'])) {
+    if (strpos(\$_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false) {
+            \$_SERVER['HTTPS'] = true;
+    }
+}
+
+require 'kirby/bootstrap.php';
+
+echo (new Kirby)->render();
+
+newindexphp
+
 # install some kirby plugins
 RUN composer require getkirby/cli
 
