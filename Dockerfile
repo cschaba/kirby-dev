@@ -48,7 +48,7 @@ RUN cd /var/www/ && rm html/* && composer create-project getkirby/starterkit htm
 RUN mkdir -p /var/www/html/media && touch /var/www/html/media/index.html
 
 # enable support for HTTPS behind a proxy
-COPY <<-newindexphp index.php
+COPY <<-newindexphp /var/www/html/index.php
 <?php
 
 if (isset(\$_SERVER['HTTP_X_FORWARDED_FOR'])) {
