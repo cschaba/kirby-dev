@@ -79,8 +79,26 @@ echo (new Kirby)->render();
 
 newindexphp
 
+# copy the site
+COPY src/site /var/www/html/site
+
 # install some kirby plugins
 RUN composer require getkirby/cli
+
+# install and configure the versions plugin
+RUN composer require lukasbestle/kirby-versions
+RUN <<initversions bash
+tagName="initial"
+cd /var/www/html/content
+git init
+git add -A
+git config user.email "kirby@localhost"
+git config user.name "Kirby"
+git commit -m "Initial version"
+git tag "\$tagName" -am "Initial version"
+git checkout "\$tagName"
+git branch -d master
+initversions
 
 # fix permissions
 RUN chown -R www-data:www-data /var/www/html
@@ -88,7 +106,7 @@ RUN chown -R www-data:www-data /var/www/html
 # define volumes which will contain users data
 VOLUME /var/www/html/content
 VOLUME /var/www/html/media
-VOLUME /var/www/html/site
+#VOLUME /var/www/html/site
 
 # Expose port 80
 EXPOSE 80

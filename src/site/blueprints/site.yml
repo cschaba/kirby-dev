@@ -1,0 +1,7 @@
+title: Site
+
+sections:
+  pages:
+    type: pages
+  files:
+    type: files
