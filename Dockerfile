@@ -45,20 +45,9 @@ RUN composer --version
 # Set the working directory for HTML files (this will be linked to the host volume)
 WORKDIR /var/www/html
 
-# install kirby via composer
+# install kirby with plainkit via composer
 # https://getkirby.com/docs/guide/install-guide/composer
-#RUN cd /var/www/ && rm html/* && composer create-project getkirby/starterkit html
-
-# use the plainkit
 RUN cd /var/www/ && rm html/* && composer create-project getkirby/plainkit html
-# patch the default template to display also the text and not only the header,
-# as this is irritating when adding text in panel does not appear on the site...
-COPY <<-templatepatched site/templates/default.php
-<h1><?= \$page->title() ?></h1>
-<div>
-  <?= \$page->text()->kirbytext() ?>
-</div>
-templatepatched
 
 # create the media folder
 RUN mkdir -p /var/www/html/media && touch /var/www/html/media/index.html
@@ -106,7 +95,6 @@ RUN chown -R www-data:www-data /var/www/html
 # define volumes which will contain users data
 VOLUME /var/www/html/content
 VOLUME /var/www/html/media
-#VOLUME /var/www/html/site
 
 # Expose port 80
 EXPOSE 80

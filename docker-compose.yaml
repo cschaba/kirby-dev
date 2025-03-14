@@ -10,11 +10,11 @@ services:
     volumes:
       - content:/var/www/html/content
       - media:/var/www/html/media
-      # - site:/var/www/html/site
+      # make the site live by uncomment the next line
+      #- ./src/site:/var/www/html/site
     container_name: kirby-dev
     restart: always
 
 volumes:
   content:
   media:
-  site:
