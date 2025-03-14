@@ -79,6 +79,9 @@ echo (new Kirby)->render();
 
 newindexphp
 
+# copy the site
+COPY src/site /var/www/html/site
+
 # install some kirby plugins
 RUN composer require getkirby/cli
 
@@ -103,7 +106,7 @@ RUN chown -R www-data:www-data /var/www/html
 # define volumes which will contain users data
 VOLUME /var/www/html/content
 VOLUME /var/www/html/media
-VOLUME /var/www/html/site
+#VOLUME /var/www/html/site
 
 # Expose port 80
 EXPOSE 80
