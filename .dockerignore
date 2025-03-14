@@ -6,3 +6,8 @@ kirby/.vscode/
 kirby/bench/
 kirby/tests/
 kirby/.php-cs-fixer.dist.php
+# no runtime data
+*.sess
+*.cache
+src/site/accounts/*/.htpasswd
+src/site/accounts/*/user.txt
