@@ -10,7 +10,7 @@ services:
     volumes:
       - content:/var/www/html/content
       - media:/var/www/html/media
-      # make the site live by uncomment the next line
+      # make the site folder "live" by uncomment the next line
       #- ./src/site:/var/www/html/site
     container_name: kirby-dev
     restart: always
