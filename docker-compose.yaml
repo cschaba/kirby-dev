@@ -4,9 +4,9 @@ services:
   web:
     build:
       context: .
-    image: kirby-dev
+    image: kirby-dev:22.04
     ports:
-      - "80:80"
+      - "35903:80"
     volumes:
       - content:/var/www/html/content
       - media:/var/www/html/media
