@@ -15,6 +15,13 @@ Requirements:
 
 Steps:
 
+First clone Kirby Source code to `./src/`
+
+```
+(cd src && git clone https://github.com/getkirby/kirby.git)
+(cd src && git clone https://github.com/lukasbestle/kirby-versions.git)
+``` 
+
 1. Run `docker compose build` to create the image
 2. Run `docker compose up -d` to run the container
 
@@ -22,7 +29,7 @@ The apache2 logfiles are printed to the docker logs. Use `docker compose logs -f
 
 ## Your site
 
-Open the website with http://localhost and access the panel via http://localhost/panel.  You can edit all content via panel.
+Open the website with http://localhost:35903 and access the panel via http://localhost:35903/panel.  You can edit all content via panel.
 
 ## Edit site templates
 
