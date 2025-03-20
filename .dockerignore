@@ -1,4 +1,5 @@
 .git/
+src/**/.git
 # copy only what is needed into docker image
 kirby/.git/
 kirby/.tx/

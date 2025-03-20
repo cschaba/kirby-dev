@@ -63,16 +63,25 @@ WORKDIR /var/www/html
 RUN chsh -s /bin/bash www-data
 RUN chown -R www-data:www-data /var/www
 
+# install the plainkit first
+#   > cd src && git clone https://github.com/getkirby/plainkit.git
+#
+RUN rm -fr /var/www/html/
+COPY --chown=www-data:www-data src/plainkit /var/www/html
+RUN rm -fr /var/www/html/.git
+
 # checkout the kirby sourcecode:
 #   > cd src && git clone https://github.com/getkirby/kirby.git
 #
 RUN rm -fr /var/www/html/kirby
 COPY --chown=www-data:www-data src/kirby /var/www/html/kirby
+RUN rm -fr /var/www/html/kirby/.git
 
 # checkout the kirby versions plugin:
 #   > cd src && git clone https://github.com/lukasbestle/kirby-versions.git
 RUN rm -fr /var/www/html/site/plugins/versions
 COPY --chown=www-data:www-data src/kirby-versions /var/www/html/site/plugins/versions
+RUN rm -fr /var/www/html/site/plugins/versions/.git
 
 # additional dev packages
 RUN cd /var/www/html/kirby && composer require --dev friendsofphp/php-cs-fixer:3.52.1
@@ -84,6 +93,25 @@ RUN cd /var/www/html/site/plugins/versions && composer require --dev friendsofph
 RUN cd /var/www/html/site/plugins/versions && composer require --dev phpunit/phpunit
 RUN cd /var/www/html/site/plugins/versions && composer require --dev vimeo/psalm
 RUN cd /var/www/html/site/plugins/versions && composer require --dev phpmd/phpmd
+
+# enable support for HTTPS behind a proxy
+COPY <<-newindexphp /var/www/html/index.php
+<?php
+
+if (isset(\$_SERVER['HTTP_X_FORWARDED_FOR'])) {
+    if (strpos(\$_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false) {
+            \$_SERVER['HTTPS'] = true;
+    }
+}
+
+require 'kirby/bootstrap.php';
+
+echo (new Kirby)->render();
+
+newindexphp
+
+# copy the site
+COPY src/site /var/www/html/site
 
 # fix permissions
 RUN echo "fixing permissions... will take some seconds..."

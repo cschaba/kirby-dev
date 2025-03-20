@@ -6,7 +6,7 @@ services:
       context: .
     image: kirby-dev:22.04
     ports:
-      - "35903:80"
+      - "35803:80"
     volumes:
       - content:/var/www/html/content
       - media:/var/www/html/media
