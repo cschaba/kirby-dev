@@ -1,7 +1,7 @@
 # Use official Ubuntu as a base image
 FROM ubuntu:22.04
 
-ENV LANG=de_DE.UTF-8
+#ENV LANG=de_DE.UTF-8
 
 # Set environment variables to prevent some prompts during installation
 ENV DEBIAN_FRONTEND=noninteractive
@@ -60,6 +60,8 @@ RUN echo "xdebug.mode=coverage" >> /etc/php/8.1/cli/conf.d/20-xdebug.ini
 
 # Set the working directory for HTML files (this will be linked to the host volume)
 WORKDIR /var/www/html
+RUN chsh -s /bin/bash www-data
+RUN chown -R www-data:www-data /var/www
 
 # checkout the kirby sourcecode:
 #   > cd src && git clone https://github.com/getkirby/kirby.git
@@ -84,7 +86,8 @@ RUN cd /var/www/html/site/plugins/versions && composer require --dev vimeo/psalm
 RUN cd /var/www/html/site/plugins/versions && composer require --dev phpmd/phpmd
 
 # fix permissions
-#RUN find /var/www/html | xargs chown www-data:www-data
+RUN echo "fixing permissions... will take some seconds..."
+RUN find /var/www | xargs chown www-data:www-data
 
 # define volumes which will contain users data
 VOLUME /var/www/html/cache

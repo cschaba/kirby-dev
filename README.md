@@ -5,6 +5,7 @@ This is my *personal* setup to create new websites and for developing plugins (l
 Here you can find the original [Kirby-CMS](https://getkirby.com)
 
 NO WARRANTY, NO SUPPORT, NO NOTHING YET!
+DONT USE THIS FOR PRODUCTION!
 
 ## Getting started
 
@@ -17,7 +18,7 @@ Steps:
 
 First clone Kirby Source code to `./src/`
 
-```
+```bash
 (cd src && git clone https://github.com/getkirby/kirby.git)
 (cd src && git clone https://github.com/lukasbestle/kirby-versions.git)
 ``` 
@@ -52,4 +53,36 @@ services:
       - ./src/site:/var/www/html/site
     container_name: kirby-dev
     restart: always
+```
+
+## Run tests
+
+Login into the docker container and switch to user "www-data"
+(user `www-data` is important, otherwise there will be a lot of errors).
+
+```console
+user@linux:~/Development/kirby-dev $ docker exec -it -u www-data kirby-dev bash
+www-data@6aef4229e0d8:~/html/kirby $ composer test
+> phpunit
+PHPUnit 10.5.38 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.1.2-1ubuntu2.20
+Configuration: /var/www/html/kirby/phpunit.xml.dist
+```
+
+You also need to take out the paramter `phpunit.xml.dis` from phpunit configuration:
+
+```diff
+diff --git a/phpunit.xml.dist b/phpunit.xml.dist
+index 3d839b3f5..940b9909a 100644
+--- a/phpunit.xml.dist
++++ b/phpunit.xml.dist
+@@ -6,7 +6,6 @@
+        bootstrap="tests/bootstrap.php"
+        cacheDirectory=".phpunit.cache"
+        colors="true"
+-       controlGarbageCollector="true"
+        displayDetailsOnIncompleteTests="true"
+        displayDetailsOnSkippedTests="true"
+        displayDetailsOnTestsThatTriggerDeprecations="true"
 ```
