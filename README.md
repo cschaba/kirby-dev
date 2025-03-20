@@ -43,16 +43,20 @@ services:
   web:
     build:
       context: .
-    image: kirby-dev
+    image: kirby-dev:22.04
     ports:
-      - "80:80"
+      - "35903:80"
     volumes:
       - content:/var/www/html/content
       - media:/var/www/html/media
-      # make the site live by uncomment the next line
-      - ./src/site:/var/www/html/site
+      # make the site folder "live" by uncomment the next line
+      #- ./src/site:/var/www/html/site
     container_name: kirby-dev
     restart: always
+
+volumes:
+  content:
+  media:
 ```
 
 ## Run tests
