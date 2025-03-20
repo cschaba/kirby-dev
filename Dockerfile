@@ -113,6 +113,21 @@ newindexphp
 # copy the site
 COPY src/site /var/www/html/site
 
+# setup GIT for versions plugin
+RUN <<initversions bash
+tagName="initial"
+cd /var/www/html/content
+git init
+git config --global --add safe.directory /var/www/html/content
+git add -A
+git config user.email "kirby@localhost"
+git config user.name "Kirby"
+git commit -m "Initial version"
+git tag "\$tagName" -am "Initial version"
+git checkout "\$tagName"
+git branch -d master
+initversions
+
 # fix permissions
 RUN echo "fixing permissions... will take some seconds..."
 RUN find /var/www | xargs chown www-data:www-data
